@@ -1,19 +1,21 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {createLogger} from "redux-logger";
-import counterSlice from "../slices/counterSlice";
+import userSlice from "../slices/userSlice";
 
 const logger = createLogger();
 const devMode = 'development';
 
 const rootReducer = combineReducers({
-  counter: counterSlice.reducer,
+  user: userSlice.reducer,
 });
 
 const initialState = {};
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  }).concat(logger),
   devTools: devMode !== 'production',
   preloadedState: initialState,
 });

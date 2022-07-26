@@ -35,6 +35,11 @@
     "no-unused-vars": "off",
     "consistent-return": "off",
     "react/jsx-no-useless-fragment": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "import/prefer-default-export": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "no-undef": "off"
   }
 }
