@@ -8,8 +8,10 @@ export const BACKGROUND_BLACK_COLOR = '#2B3136';
 export const MAIN_COLOR = '#724FDB';
 export const SUB_COLOR = '#E54980';
 export const WHITE_COLOR = '#D3D8DE';
+export const BACKGROUND_LINE = '#3B4146';
 
 export const MainButton = styled(Button)`
+  font-family: inherit;
   width: 100%;
   height: 56px;
   background-color: ${MAIN_COLOR};

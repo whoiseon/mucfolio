@@ -5,22 +5,13 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import {loadToMyInfo} from "./slices/userSlice";
 import Workspace from "./pages/Workspace";
-import {auth} from "./firebaseConfig";
+import Project from "./pages/Project";
+import Memo from "./pages/Memo";
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        sessionStorage.setItem('connect_user', JSON.stringify(user));
-      } else {
-        sessionStorage.removeItem('connect_user');
-      }
-    });
-  }, []);
 
   useEffect(() => {
     dispatch(loadToMyInfo());
@@ -38,6 +29,8 @@ const App = () => {
           }
         />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/project" element={<Project />} />
+        <Route path="/memo" element={<Memo />} />
       </Routes>
     </div>
   );
