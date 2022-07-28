@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import {Button} from "@mui/material";
 import {keyframes} from "@emotion/react";
+import LoadingButton from "@mui/lab/LoadingButton";
 import checkImage from "../assets/check.svg";
 
 export const BACKGROUND_COLOR = '#343A3F';
@@ -9,6 +10,7 @@ export const MAIN_COLOR = '#724FDB';
 export const SUB_COLOR = '#E54980';
 export const WHITE_COLOR = '#D3D8DE';
 export const BACKGROUND_LINE = '#3B4146';
+export const BACKGROUND_BLACK_LINE = '#33393E';
 
 export const MainButton = styled(Button)`
   font-family: inherit;
@@ -28,6 +30,15 @@ export const MainButton = styled(Button)`
     color: gray;
     border: 1px solid #454C52;
   }
+`;
+
+export const MainLoadingButton = styled(LoadingButton)`
+  font-family: inherit;
+  color: ${WHITE_COLOR};
+  width: 100%;
+  height: 56px;
+  border-radius: 0;
+  box-shadow: none;
 `;
 
 export const CheckboxWrapper = styled.div`
@@ -91,6 +102,20 @@ export const ErrorMessage = styled.p`
   color: ${SUB_COLOR};
   margin-bottom: 20px;
   animation: ${ErrorAnimation} 0.4s ease-in;
+`;
+
+export const ProfileImage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #808993;
+  border-radius: 30px;
+  background-color: ${BACKGROUND_LINE};
+  margin-right: 8px;
 `;
 
 export const Copyright = styled.p`

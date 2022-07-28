@@ -7,6 +7,7 @@ import {loadToMyInfo} from "./slices/userSlice";
 import Workspace from "./pages/Workspace";
 import Project from "./pages/Project";
 import Memo from "./pages/Memo";
+import ProjectView from "./components/ProjectView";
 
 const App = () => {
   const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import {Button} from "@mui/material";
 import {BACKGROUND_COLOR, BACKGROUND_LINE, WHITE_COLOR} from "../../styles/common";
 
 export const MenuWrapper = styled.div`
-  width: 240px;
+  min-width: 240px;
   border-right: 1px solid ${BACKGROUND_LINE};
 `;
 
@@ -14,7 +14,7 @@ export const MenuButton = styled(Button)`
   padding: 12px 16px;
   text-align: left;
   color: ${WHITE_COLOR};
-  font-weight: 600;
+  font-weight: 500;
   &:hover, &:active {
     background-color: ${BACKGROUND_LINE}
   }
@@ -28,22 +28,30 @@ export const MenuList = styled.div`
   width: 100%;
   font-size: 14px;
   font-weight: 500;
-  a {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    padding: 8px 16px;
-    cursor: pointer;
-    background-color: ${BACKGROUND_COLOR};
-    color: #646B74;
-    transition: background-color, color 0.2s ease;
-    svg {
-      font-size: 16px;
-      margin-right: 8px;
-    }
+  color: #646B74;
+  background-color: ${BACKGROUND_COLOR};
+  div:nth-of-type(1) {
+    color: ${(props) => (
+    props.isLocation === '/project'
+      ? WHITE_COLOR
+      : '#646B74'
+  )};
+    background-color: ${(props) => (
+    props.isLocation === '/project'
+      ? '#2B3136'
+      : BACKGROUND_COLOR
+  )};
   }
-  a:hover {
-    background-color: #2B3136;
-    color: ${WHITE_COLOR};
+  div:nth-of-type(2) {
+    color: ${(props) => (
+    props.isLocation === '/memo'
+      ? WHITE_COLOR
+      : '#646B74'
+  )};
+    background-color: ${(props) => (
+    props.isLocation === '/memo'
+      ? '#2B3136'
+      : BACKGROUND_COLOR
+  )};
   }
 `;

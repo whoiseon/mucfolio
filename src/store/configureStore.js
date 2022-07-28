@@ -1,12 +1,14 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {createLogger} from "redux-logger";
 import userSlice from "../slices/userSlice";
+import projectSlice from "../slices/projectSlice";
 
 const logger = createLogger();
 const devMode = 'development';
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
+  project: projectSlice.reducer,
 });
 
 const initialState = {};

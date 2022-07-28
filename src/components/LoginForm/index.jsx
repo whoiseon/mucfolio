@@ -2,11 +2,12 @@ import {memo, useCallback, useEffect, useState} from "react";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MailIcon from '@mui/icons-material/Mail';
+import SaveIcon from '@mui/icons-material/Save';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {DevLink, FormWrapper, Header, Input, InputWrapper, SignUpLink, TextHighlight} from "./styles";
 import useInput from "../../hooks/useInput";
-import {Copyright, ErrorMessage, MainButton} from "../../styles/common";
+import {Copyright, ErrorMessage, MainButton, MainLoadingButton} from "../../styles/common";
 import {userLogIn} from "../../slices/userSlice";
 
 const LoginForm = () => {
@@ -16,7 +17,7 @@ const LoginForm = () => {
   const [password, onChangePassword, setPassword] = useInput('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { userLogInError } = useSelector((state) => state.user);
+  const { userLogInError, userLogInLoading } = useSelector((state) => state.user);
 
   const onSubmitLogin = useCallback(async (e) => {
     e.preventDefault();
@@ -50,7 +51,28 @@ const LoginForm = () => {
         <Input type="password" value={password} onChange={onChangePassword} placeholder="비밀번호" />
       </InputWrapper>
       { errorMessage && <ErrorMessage>{ errorMessage }</ErrorMessage> }
-      <MainButton type="submit" startIcon={<LockOpenIcon />} onClick={onSubmitLogin}>로그인</MainButton>
+      {
+        userLogInLoading
+          ? (
+            <MainLoadingButton
+              loading
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="outlined"
+            >
+              로그인 중...
+            </MainLoadingButton>
+          )
+          : (
+            <MainButton
+              type="submit"
+              startIcon={<LockOpenIcon />}
+              onClick={onSubmitLogin}
+            >
+              로그인
+            </MainButton>
+          )
+      }
       <SignUpLink>
         <Link to="/signup">아직 회원이 아니신가요? <TextHighlight>회원가입</TextHighlight></Link>
       </SignUpLink>
