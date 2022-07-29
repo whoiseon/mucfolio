@@ -19,10 +19,14 @@ body {
   background-color: #343A3F;
 }
 
-input, button, ul, li a, p, h1, h2, h3, h4, h5, h6 {
+input, form, button, ul, li a, p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+input:focus {
+  outline: none;
 }
 
 a {

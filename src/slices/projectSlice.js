@@ -7,9 +7,9 @@ const initialState = {
   userProjectLoading: false,
   userProjectDone: false,
   userProjectError: null,
-  userScheduleLoading: false,
-  userScheduleDone: false,
-  userScheduleError: null,
+  addNewProjectLoading: false,
+  addNewProjectDone: false,
+  addNewProjectError: null,
 };
 
 export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid }) => {
@@ -32,7 +32,28 @@ export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid 
       userProjects.push(docResponse);
     });
 
+    console.log(userProjects);
+
     return userProjects;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const addNewProject = createAsyncThunk("ADD_NEW_PROJECT", async ({ uid, projectName }) => {
+  try {
+    const newProject = {
+      projectName,
+      schedule: [],
+    };
+
+    await firestore.collection('users').doc(uid)
+      .collection('project').doc(projectName)
+      .set({ });
+
+    return newProject;
   } catch (error) {
     if (error.code) {
       throw error.code;
@@ -58,6 +79,20 @@ const projectSlice = createSlice({
     [getUserProject.rejected]: (state, action) => {
       state.userProjectLoading = false;
       state.userProjectError = action.error.message;
+    },
+    [addNewProject.pending]: (state) => {
+      state.addNewProjectLoading = true;
+      state.addNewProjectDone = false;
+      state.addNewProjectError = null;
+    },
+    [addNewProject.fulfilled]: (state, action) => {
+      state.addNewProjectLoading = false;
+      state.addNewProjectDone = true;
+      state.projectList.unshift(action.payload);
+    },
+    [addNewProject.rejected]: (state, action) => {
+      state.addNewProjectLoading = false;
+      state.addNewProjectError = action.error.message;
     },
   },
 });

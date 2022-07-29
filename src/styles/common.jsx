@@ -6,7 +6,7 @@ import checkImage from "../assets/check.svg";
 
 export const BACKGROUND_COLOR = '#343A3F';
 export const BACKGROUND_BLACK_COLOR = '#2B3136';
-export const MAIN_COLOR = '#724FDB';
+export const MAIN_COLOR = '#6841DB';
 export const SUB_COLOR = '#E54980';
 export const WHITE_COLOR = '#D3D8DE';
 export const BACKGROUND_LINE = '#3B4146';

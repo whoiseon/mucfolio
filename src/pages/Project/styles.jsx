@@ -13,7 +13,12 @@ export const ProjectList = styled.div`
   flex-direction: column;
   position: relative;
   min-width: 380px;
-  border-right: 1px solid ${BACKGROUND_LINE}
+  border-right: 1px solid ${BACKGROUND_LINE};
+  padding-bottom: 70px;
+`;
+
+export const List = styled.div`
+  overflow-y: scroll;
 `;
 
 export const ProjectButton = styled.button`
@@ -42,5 +47,33 @@ export const ProjectButton = styled.button`
     margin-left: auto;
     color: #656B73;
     transition: background-color 0.15s ease-in;
+  }
+`;
+
+export const AddProjectButton = styled.button`
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  text-align: left;
+  padding: 24px 16px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #646B74;
+  background-color: ${BACKGROUND_COLOR};
+  width: 100%;
+  border-top: 1px solid ${BACKGROUND_LINE};
+  margin-top: auto;
+  cursor: pointer;
+  transition: background-color, color 0.15s ease-in;
+  &:hover {
+    background-color: #383E43;
+    color: ${WHITE_COLOR};
+    svg {
+      color: ${WHITE_COLOR};
+    }
+  }
+  &:active {
+    background-color: #32383C;
   }
 `;
