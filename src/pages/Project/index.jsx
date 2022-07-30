@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import AppLayout from "../../components/AppLayout";
 import {AddProjectButton, List, ProjectList, ProjectWrapper} from "./styles";
-import ProjectView from "../../components/ProjectView";
+import ScheduleView from "../../components/ScheduleView";
 import ProjectItem from "../../components/ProjectItem";
 import {getUserProject} from "../../slices/projectSlice";
 import AddProjectForm from "../../components/AddProjectForm";
@@ -40,7 +40,7 @@ const Project = ({ children }) => {
             + 새 프로젝트
           </AddProjectButton>
         </ProjectList>
-        <ProjectView />
+        <ScheduleView />
       </ProjectWrapper>
       { showAddProjectModal && <AddProjectForm setShowAddProjectModal={setShowAddProjectModal} /> }
     </AppLayout>
