@@ -1,7 +1,9 @@
 import {memo} from "react";
 import scheduleCheckImg from '../../assets/schedule_check.svg';
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
-import {Background, ScheduleCheck, ScheduleContent, ScheduleWrapper, SubMenu} from "./styles";
+import {Background, CommentWrapper, ScheduleCheck, ScheduleContent, ScheduleWrapper, SubMenu} from "./styles";
+import Comment from "../Comment";
+import AddCommentForm from "../AddCommentForm";
 
 const ProjectView = () => {
   return (
@@ -29,6 +31,10 @@ const ProjectView = () => {
             스케줄 완료하기
           </button>
         </ScheduleCheck>
+        <AddCommentForm />
+        <CommentWrapper>
+          <Comment />
+        </CommentWrapper>
       </ScheduleWrapper>
     </Background>
   );

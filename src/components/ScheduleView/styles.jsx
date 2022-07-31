@@ -62,3 +62,18 @@ export const ScheduleCheck = styled.div`
     }
   }
 `;
+
+export const CommentWrapper = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  div {
+    display: flex;
+    p:nth-of-type(1) {
+      color: ${WHITE_COLOR};
+    }
+    p:nth-of-type(2) {
+      color: #646B74;
+      margin-left: auto;
+    }
+  }
+`;
