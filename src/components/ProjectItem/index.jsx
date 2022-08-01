@@ -2,10 +2,16 @@ import {memo, useCallback, useEffect, useState} from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 import scheduleCheckImg from '../../assets/schedule_check.svg';
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import {ProjectButton} from "../../pages/Project/styles";
 import {ItemWrapper, ProjectDetail, ScheduleButton} from "./styles";
+
+const changeEmptyString = (text) => {
+  const dashString = text.replace(' ', '-');
+  return dashString;
+};
 
 const ProjectItem = ({ projectData }) => {
   const dispatch = useDispatch();
@@ -32,25 +38,35 @@ const ProjectItem = ({ projectData }) => {
             {
               projectData.schedule.map((schedule, i) => {
                 return (
-                  <ScheduleButton key={schedule.title} status={schedule.status}>
-                    {
-                      schedule.status === '완료'
-                        ? <img src={scheduleCheckOkImg} alt="scheduleCheckOkImg" />
-                        : <img src={scheduleCheckImg} alt="scheduleCheckImg" />
-                    }
-                    <span>
-                      {schedule.title}
-                    </span>
-                    <p>
-                      {schedule.createdAt}
-                    </p>
-                  </ScheduleButton>
+                  <Link to={`/project/${changeEmptyString(projectData.projectName)}/${changeEmptyString(schedule.title)}`} key={schedule.title}>
+                    <ScheduleButton status={schedule.status}>
+                      {
+                        schedule.status
+                          ? <img src={scheduleCheckOkImg} alt="scheduleCheckOkImg" />
+                          : <img src={scheduleCheckImg} alt="scheduleCheckImg" />
+                      }
+                      <span>
+                        {schedule.title}
+                      </span>
+                      <p>
+                        {
+                          schedule.status
+                            ? '완료'
+                            : (
+                              schedule.createdAt
+                            )
+                        }
+                      </p>
+                    </ScheduleButton>
+                  </Link>
                 );
               })
             }
-            <ScheduleButton>
-              + 스케줄 추가
-            </ScheduleButton>
+            <Link to={`${changeEmptyString(projectData.projectName)}/new-schedule`}>
+              <ScheduleButton>
+                + 스케줄 추가
+              </ScheduleButton>
+            </Link>
           </ProjectDetail>
         )
       }

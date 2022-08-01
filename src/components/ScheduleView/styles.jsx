@@ -21,13 +21,14 @@ export const ScheduleWrapper = styled.div`
   flex-direction: column;
   min-width: 800px;
   max-width: 600px;
+  overflow-y: scroll;
   margin: 0 auto;
   padding-top: 80px;
   h1 {
     font-size: 28px;
     margin-bottom: 10px;
   }
-  p:nth-of-type(1) {
+  & > p:nth-of-type(1) {
     font-size: 16px;
     color: #646B74;
   }
@@ -38,18 +39,19 @@ export const ScheduleContent = styled.p`
   width: 100%;
   line-height: 34px;
   padding: 40px 0;
-  border-bottom: 1px solid ${BACKGROUND_LINE};
 `;
 
 export const ScheduleCheck = styled.div`
   padding: 28px 0;
+  border-top: 1px solid ${BACKGROUND_LINE};
   border-bottom: 1px solid ${BACKGROUND_LINE};
   button {
     display: flex;
     align-items: center;
     width: 100%;
     background-color: ${BACKGROUND_COLOR};
-    color: ${WHITE_COLOR};
+    color: ${(props) => (props.status ? '#646B74' : WHITE_COLOR)};
+    text-decoration: ${(props) => (props.status ? 'line-through' : 'none')};;
     font-size: 16px;
     cursor: pointer;
     padding: 12px 16px;

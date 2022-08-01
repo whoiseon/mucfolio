@@ -1,15 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 import { firestore } from "../firebaseConfig";
 
 const initialState = {
   projectList: [],
+  scheduleView: null,
   scheduleTest: null,
   userProjectLoading: false,
   userProjectDone: false,
   userProjectError: null,
+  userScheduleLoading: false,
+  userScheduleDone: false,
+  userScheduleError: null,
   addNewProjectLoading: false,
   addNewProjectDone: false,
   addNewProjectError: null,
+  addNewScheduleLoading: false,
+  addNewScheduleDone: false,
+  addNewScheduleError: null,
 };
 
 export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid }) => {
@@ -32,9 +40,24 @@ export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid 
       userProjects.push(docResponse);
     });
 
-    console.log(userProjects);
-
     return userProjects;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const getUserSchedule = createAsyncThunk("GET_USER_SCHEDULE", async ({ uid, projectName, scheduleName }) => {
+  try {
+    const emptyProjectName = projectName.replace('-', ' ');
+    const emptyScheduleName = scheduleName.replace('-', ' ');
+    const response = await firestore.collection('users').doc(uid)
+      .collection('project').doc(emptyProjectName)
+      .get();
+    const scheduleData = response.data();
+
+    return scheduleData[emptyScheduleName];
   } catch (error) {
     if (error.code) {
       throw error.code;
@@ -61,6 +84,52 @@ export const addNewProject = createAsyncThunk("ADD_NEW_PROJECT", async ({ uid, p
   }
 });
 
+export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid, projectName, content, title }) => {
+  try {
+    const emptyProjectName = projectName.replace('-', ' ');
+    const createdSchedule = {
+      project: emptyProjectName,
+      content,
+      createdAt: dayjs().format("YY.MM.DD"),
+      status: false,
+      title,
+    };
+    await firestore.collection('users').doc(uid)
+      .collection('project').doc(emptyProjectName)
+      .update({
+        [title]: {
+          project: emptyProjectName,
+          content,
+          createdAt: dayjs().format("YY.MM.DD"),
+          status: false,
+          title,
+        },
+      });
+
+    return createdSchedule;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const scheduleCheck = createAsyncThunk("SCHEDULE_CHECK", async ({ uid, projectName, scheduleName, checked }) => {
+  try {
+    const emptyProjectName = projectName.replace('-', ' ');
+    const emptyScheduleName = scheduleName.replace('-', ' ');
+    const response = await firestore.collection('users').doc(uid)
+      .collection('project').doc(emptyProjectName)
+      .update({
+        [`${emptyScheduleName}.status`]: checked,
+      });
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
 const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -80,6 +149,20 @@ const projectSlice = createSlice({
       state.userProjectLoading = false;
       state.userProjectError = action.error.message;
     },
+    [getUserSchedule.pending]: (state) => {
+      state.userScheduleLoading = true;
+      state.userScheduleDone = false;
+      state.userScheduleError = null;
+    },
+    [getUserSchedule.fulfilled]: (state, action) => {
+      state.userScheduleLoading = false;
+      state.userScheduleDone = true;
+      state.scheduleView = action.payload;
+    },
+    [getUserSchedule.rejected]: (state, action) => {
+      state.userScheduleLoading = false;
+      state.userScheduleError = action.error.message;
+    },
     [addNewProject.pending]: (state) => {
       state.addNewProjectLoading = true;
       state.addNewProjectDone = false;
@@ -93,6 +176,21 @@ const projectSlice = createSlice({
     [addNewProject.rejected]: (state, action) => {
       state.addNewProjectLoading = false;
       state.addNewProjectError = action.error.message;
+    },
+    [addNewSchedule.pending]: (state) => {
+      state.addNewScheduleLoading = true;
+      state.addNewScheduleDone = false;
+      state.addNewScheduleError = null;
+    },
+    [addNewSchedule.fulfilled]: (state, action) => {
+      const filter = state.projectList.find((v) => v.projectName === action.payload.project);
+      state.addNewScheduleLoading = false;
+      state.addNewScheduleDone = true;
+      filter.schedule.push(action.payload);
+    },
+    [addNewSchedule.rejected]: (state, action) => {
+      state.addNewScheduleLoading = false;
+      state.addNewScheduleError = action.error.message;
     },
   },
 });

@@ -7,11 +7,11 @@ import {loadToMyInfo} from "./slices/userSlice";
 import Workspace from "./pages/Workspace";
 import Project from "./pages/Project";
 import Memo from "./pages/Memo";
-import ProjectView from "./components/ScheduleView";
+import ScheduleView from "./components/ScheduleView";
+import AddScheduleForm from "./components/AddScheduleForm";
 
 const App = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -30,7 +30,10 @@ const App = () => {
           }
         />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/project" element={<Project />} />
+        <Route path="/project" element={<Project />}>
+          <Route path=":project/new-schedule" element={<AddScheduleForm />} />
+          <Route path=":project/:schedule" element={<ScheduleView />} />
+        </Route>
         <Route path="/memo" element={<Memo />} />
       </Routes>
     </div>

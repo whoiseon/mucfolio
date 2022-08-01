@@ -10,6 +10,9 @@ export const ProjectDetail = styled.div`
   font-size: 14px;
   font-weight: 500;
   background-color: ${BACKGROUND_BLACK_COLOR};
+  a > button > span {
+    color: ${WHITE_COLOR};
+  }
   button:last-of-type {
     color: #646B74;
     transition: color 0.15s ease;
@@ -24,16 +27,16 @@ export const ScheduleButton = styled.button`
   align-items: center;
   text-align: left;
   width: 100%;
-  background-color: ${(props) => (props.status === '완료' ? MAIN_COLOR : BACKGROUND_BLACK_COLOR)};
-  color: ${(props) => (props.status === '완료' ? 'white' : WHITE_COLOR)};
+  background-color: ${(props) => (props.status ? MAIN_COLOR : BACKGROUND_BLACK_COLOR)};
+  color: ${(props) => (props.status ? 'white' : WHITE_COLOR)};
   padding: 20px 16px;
   cursor: pointer;
-  transition: background-color 0.15s ease-in;
+  transition: background-color, color 0.15s ease-in;
   &:not(:last-of-type) {
     border-bottom: 1px solid ${BACKGROUND_BLACK_LINE};
   }
   &:hover {
-    background-color: ${(props) => (props.status === '완료' ? '#593AB9' : '#252B2F')};
+    background-color: ${(props) => (props.status ? '#593AB9' : '#252B2F')};
   }
   &:active {
     background-color: #293034;
@@ -43,6 +46,6 @@ export const ScheduleButton = styled.button`
   }
   p {
     margin-left: auto;
-    color: ${(props) => (props.status === '완료' ? 'white' : '#646B74')};
+    color: ${(props) => (props.status ? 'white' : '#646B74')};
   }
 `;
