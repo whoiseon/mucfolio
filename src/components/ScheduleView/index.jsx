@@ -1,30 +1,29 @@
 import {memo, useCallback, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {Stack} from "@mui/material";
+import {Skeleton} from "@mui/lab";
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import scheduleCheckOkBackgroundImg from '../../assets/schedule_check_ok_background.svg';
-import {Background, CommentWrapper, ScheduleCheck, ScheduleContent, ScheduleWrapper, SubMenu} from "./styles";
-import Comment from "../Comment";
-import AddCommentForm from "../AddCommentForm";
-import {getUserSchedule, scheduleCheck} from "../../slices/projectSlice";
+import {
+  Background,
+  CommentWrapper, CtrlButton, CtrlButtonWrapper,
+  ScheduleCheck,
+  ScheduleContent,
+  ScheduleWrapper,
+  SkeletonWrapper,
+  SubMenu,
+} from "./styles";
+import {deleteSchedule, getUserProject, getUserSchedule, scheduleCheck} from "../../slices/projectSlice";
 import DefaultView from "../DefaultView";
 
 const ProjectView = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
-  const { scheduleView } = useSelector((state) => state.project);
+  const { scheduleView, userScheduleLoading } = useSelector((state) => state.project);
   const [checked, setChecked] = useState(false);
-
-  const onClickScheduleCheck = useCallback(() => {
-    dispatch(scheduleCheck({
-      uid: userInfo.uid,
-      projectName: params.project,
-      scheduleName: params.schedule,
-      checked,
-    }));
-    setChecked((prev) => !prev);
-  }, [dispatch, checked, setChecked, userInfo.uid, params.project, params.schedule]);
 
   useEffect(() => {
     dispatch(getUserSchedule({
@@ -32,7 +31,30 @@ const ProjectView = () => {
       projectName: params.project,
       scheduleName: params.schedule,
     }));
-  }, [dispatch, userInfo.uid, params.project, params.schedule, onClickScheduleCheck]);
+    setChecked(scheduleView?.status);
+  }, [dispatch, userInfo.uid, params.project, params.schedule, scheduleView?.status]);
+
+  const onClickScheduleCheck = useCallback(async () => {
+    await setChecked((prev) => !prev);
+    await dispatch(scheduleCheck({
+      uid: userInfo.uid,
+      projectName: params.project,
+      scheduleName: params.schedule,
+      checked,
+    }));
+  }, [dispatch, checked, userInfo.uid, params.project, params.schedule]);
+
+  const onClickDeleteSchedule = useCallback(async () => {
+    await dispatch(deleteSchedule({
+      uid: userInfo.uid,
+      projectName: params.project,
+      scheduleName: params.schedule,
+    }));
+    await navigate('/project');
+    await dispatch(getUserProject({
+      uid: userInfo.uid,
+    }));
+  }, [dispatch, userInfo.uid, params.project, params.schedule, navigate]);
 
   if (scheduleView === undefined) {
     return <DefaultView />;
@@ -41,28 +63,48 @@ const ProjectView = () => {
   return (
     <Background>
       <SubMenu>
-        서브메뉴
-      </SubMenu>
-      <ScheduleWrapper>
-        <h1>{ scheduleView?.title }</h1>
-        <p>{ scheduleView?.createdAt }</p>
-        <ScheduleContent
-          dangerouslySetInnerHTML={{__html: scheduleView?.content}}
-        />
-        <ScheduleCheck status={scheduleView?.status}>
+        <ScheduleCheck status={checked}>
           <button type="button" onClick={onClickScheduleCheck}>
             {
-              scheduleView?.status
-                ? <img src={scheduleCheckOkBackgroundImg} alt="scheduleCheckOkBackgroundImg" />
-                : <img src={scheduleCheckOkImg} alt="scheduleCheckOkImg" />
+              checked
+                ? '스케줄 취소'
+                : '스케줄 완료'
             }
-            스케줄 완료하기
           </button>
         </ScheduleCheck>
-        <AddCommentForm />
-        <CommentWrapper>
-          <Comment />
-        </CommentWrapper>
+        <CtrlButtonWrapper>
+          <CtrlButton>수정</CtrlButton>
+          <CtrlButton onClick={onClickDeleteSchedule}>삭제</CtrlButton>
+        </CtrlButtonWrapper>
+      </SubMenu>
+      <ScheduleWrapper>
+        {
+          userScheduleLoading
+            ? (
+              <SkeletonWrapper>
+                <Stack>
+                  <h1>
+                    <Skeleton variant="text" width={240} height={50} />
+                  </h1>
+                  <p>
+                    <Skeleton variant="text" width={100} />
+                  </p>
+                  <p>
+                    <Skeleton variant="rectangular" width="100%" height={200} />
+                  </p>
+                </Stack>
+              </SkeletonWrapper>
+            )
+            : (
+              <>
+                <h1>{ scheduleView?.title }</h1>
+                <p>{ scheduleView?.createdAt }</p>
+                <ScheduleContent
+                  dangerouslySetInnerHTML={{__html: scheduleView?.content}}
+                />
+              </>
+            )
+        }
       </ScheduleWrapper>
     </Background>
   );

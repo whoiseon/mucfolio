@@ -26,6 +26,8 @@ const Project = ({ children }) => {
     setShowAddProjectModal(true);
   }, []);
 
+  console.log(projectList);
+
   return (
     <AppLayout>
       <ProjectWrapper>

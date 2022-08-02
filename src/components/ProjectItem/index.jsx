@@ -2,7 +2,7 @@ import {memo, useCallback, useEffect, useState} from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import scheduleCheckImg from '../../assets/schedule_check.svg';
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import {ProjectButton} from "../../pages/Project/styles";
@@ -13,13 +13,24 @@ const changeEmptyString = (text) => {
   return dashString;
 };
 
+const changeDashString = (text) => {
+  const emptyString = text.replace('-', ' ');
+  return emptyString;
+};
+
 const ProjectItem = ({ projectData }) => {
-  const dispatch = useDispatch();
+  const params = useParams();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
-  const [projectOpen, setProjectClose] = useState(false);
+  const [projectOpen, setProjectOpen] = useState(false);
+
+  useEffect(() => {
+    if (projectData.projectName === changeDashString(params.project)) {
+      setProjectOpen(true);
+    }
+  }, [params.project]);
 
   const showProject = useCallback(() => {
-    setProjectClose((prev) => !prev);
+    setProjectOpen((prev) => !prev);
   }, []);
 
   return (

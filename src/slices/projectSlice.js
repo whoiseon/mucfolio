@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
+import 'firebase/firestore';
+import firebase from "firebase/compat/app";
 import { firestore } from "../firebaseConfig";
 
 const initialState = {
@@ -18,6 +20,9 @@ const initialState = {
   addNewScheduleLoading: false,
   addNewScheduleDone: false,
   addNewScheduleError: null,
+  deleteScheduleLoading: false,
+  deleteScheduleDone: false,
+  deleteScheduleError: null,
 };
 
 export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid }) => {
@@ -103,6 +108,7 @@ export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid,
           createdAt: dayjs().format("YY.MM.DD"),
           status: false,
           title,
+          comment: {},
         },
       });
 
@@ -114,14 +120,36 @@ export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid,
   }
 });
 
+export const deleteSchedule = createAsyncThunk("DELETE_SCHEDULE", async ({ uid, projectName, scheduleName }) => {
+  try {
+    const emptyProjectName = projectName.replace('-', ' ');
+    const emptyScheduleName = scheduleName.replace('-', ' ');
+
+    const response = await firestore.collection('users').doc(uid)
+      .collection('project').doc(emptyProjectName)
+      .update({
+        [emptyScheduleName]: firebase.firestore.FieldValue.delete(),
+      });
+
+    return {
+      projectName: emptyProjectName,
+      scheduleName: emptyScheduleName,
+    };
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
 export const scheduleCheck = createAsyncThunk("SCHEDULE_CHECK", async ({ uid, projectName, scheduleName, checked }) => {
   try {
     const emptyProjectName = projectName.replace('-', ' ');
     const emptyScheduleName = scheduleName.replace('-', ' ');
-    const response = await firestore.collection('users').doc(uid)
+    await firestore.collection('users').doc(uid)
       .collection('project').doc(emptyProjectName)
       .update({
-        [`${emptyScheduleName}.status`]: checked,
+        [`${emptyScheduleName}.status`]: !checked,
       });
   } catch (error) {
     if (error.code) {
@@ -191,6 +219,19 @@ const projectSlice = createSlice({
     [addNewSchedule.rejected]: (state, action) => {
       state.addNewScheduleLoading = false;
       state.addNewScheduleError = action.error.message;
+    },
+    [deleteSchedule.pending]: (state) => {
+      state.deleteScheduleLoading = true;
+      state.deleteScheduleDone = false;
+      state.deleteScheduleError = null;
+    },
+    [deleteSchedule.fulfilled]: (state, action) => {
+      state.deleteScheduleLoading = false;
+      state.deleteScheduleDone = true;
+    },
+    [deleteSchedule.rejected]: (state, action) => {
+      state.deleteScheduleLoading = false;
+      state.deleteScheduleError = action.error.message;
     },
   },
 });

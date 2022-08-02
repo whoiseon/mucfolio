@@ -16,8 +16,8 @@ const AccountModal = ({ setAccountModal }) => {
 
   const onClickLogout = useCallback(async () => {
     await dispatch(userLogout());
-    navigate('/');
-  }, [dispatch]);
+    await navigate('/');
+  }, [dispatch, navigate]);
 
   return (
     <CloseArea onClick={onCloseModal}>

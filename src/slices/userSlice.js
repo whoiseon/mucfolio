@@ -123,10 +123,10 @@ const userSlice = createSlice({
       state.userLogoutError = null;
     },
     [userLogout.fulfilled]: (state, action) => {
+      sessionStorage.removeItem('connect_user');
       state.userLogoutLoading = false;
       state.userLogoutDone = true;
       state.userInfo = null;
-      sessionStorage.removeItem('connect_user');
     },
     [userLogout.rejected]: (state, action) => {
       state.userLogoutLoading = false;

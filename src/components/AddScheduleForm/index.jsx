@@ -26,10 +26,6 @@ const AddScheduleForm = () => {
   const [content, setContent] = useState('');
   const { projectList } = useSelector((state) => state.project);
 
-  const testFilter = projectList.find((v) => v.projectName === 'mucfolio 개발');
-
-  console.log(testFilter);
-
   const onChangeContent = useCallback((value) => {
     setContent(value);
   }, []);

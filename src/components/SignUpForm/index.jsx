@@ -14,7 +14,7 @@ const SignUpForm = () => {
   const [email, onChangeEmail, setEmail] = useInput('');
   const [password, onChangePassword, setPassword] = useInput('');
   const [checked, setChecked] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage, userSignUpDone] = useState('');
 
   const onSubmitSignUp = useCallback(async (e) => {
     e.preventDefault();
@@ -35,11 +35,15 @@ const SignUpForm = () => {
       email,
       password,
     }));
-    await navigate('/');
   }, [name, email, password]);
+
   const onClickCheckbox = useCallback(() => {
     setChecked((prev) => !prev);
   }, []);
+
+  if (userSignUpDone) {
+    navigate('/');
+  }
 
   return (
     <FormWrapper>
