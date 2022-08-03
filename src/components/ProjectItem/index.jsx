@@ -23,11 +23,11 @@ const ProjectItem = ({ projectData }) => {
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
   const [projectOpen, setProjectOpen] = useState(false);
 
-  useEffect(() => {
-    if (projectData.projectName === changeDashString(params.project)) {
-      setProjectOpen(true);
-    }
-  }, [params.project]);
+  // useEffect(() => {
+  //   if (projectData.projectName === changeDashString(params.project)) {
+  //     setProjectOpen(true);
+  //   }
+  // }, [params.project]);
 
   const showProject = useCallback(() => {
     setProjectOpen((prev) => !prev);
@@ -47,9 +47,9 @@ const ProjectItem = ({ projectData }) => {
         projectOpen && (
           <ProjectDetail>
             {
-              projectData.schedule.map((schedule, i) => {
+              projectData?.schedule.map((schedule, i) => {
                 return (
-                  <Link to={`/project/${changeEmptyString(projectData.projectName)}/${changeEmptyString(schedule.title)}`} key={schedule.title}>
+                  <Link to={`/project/${changeEmptyString(projectData?.projectName)}/${changeEmptyString(schedule.title)}`} key={schedule.title}>
                     <ScheduleButton status={schedule.status}>
                       {
                         schedule.status
