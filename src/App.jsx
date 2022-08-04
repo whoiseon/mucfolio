@@ -32,6 +32,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/project" element={<Project />}>
           <Route path=":project/new-schedule" element={<AddScheduleForm />} />
+          <Route path=":project/:schedule/update" element={<AddScheduleForm />} />
           <Route path=":project/:schedule" element={<ScheduleView />} />
         </Route>
         <Route path="/memo" element={<Memo />} />

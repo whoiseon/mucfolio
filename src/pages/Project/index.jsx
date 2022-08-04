@@ -26,8 +26,6 @@ const Project = ({ children }) => {
     setShowAddProjectModal(true);
   }, []);
 
-  console.log(projectList);
-
   return (
     <AppLayout>
       <ProjectWrapper>
@@ -46,7 +44,7 @@ const Project = ({ children }) => {
           </AddProjectButton>
         </ProjectList>
         {
-          location.pathname.includes('/new-schedule')
+          location.pathname.includes('/new-schedule') || location.pathname.includes('/update')
             ? <AddScheduleForm />
             : <ScheduleView />
         }

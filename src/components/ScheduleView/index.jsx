@@ -1,10 +1,7 @@
 import {memo, useCallback, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Stack} from "@mui/material";
-import {Skeleton} from "@mui/lab";
-import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
-import scheduleCheckOkBackgroundImg from '../../assets/schedule_check_ok_background.svg';
+import {Stack, Skeleton} from "@mui/material";
 import {
   Background,
   CommentWrapper, CtrlButton, CtrlButtonWrapper,
@@ -73,7 +70,11 @@ const ProjectView = () => {
           </button>
         </ScheduleCheck>
         <CtrlButtonWrapper>
-          <CtrlButton>수정</CtrlButton>
+          <Link to={`/project/${params.project}/${params.schedule}/update`}>
+            <CtrlButton>
+              수정
+            </CtrlButton>
+          </Link>
           <CtrlButton onClick={onClickDeleteSchedule}>삭제</CtrlButton>
         </CtrlButtonWrapper>
       </SubMenu>

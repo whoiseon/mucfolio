@@ -20,6 +20,9 @@ const initialState = {
   addNewScheduleLoading: false,
   addNewScheduleDone: false,
   addNewScheduleError: null,
+  updateScheduleLoading: false,
+  updateScheduleDone: false,
+  updateScheduleError: null,
   deleteScheduleLoading: false,
   deleteScheduleDone: false,
   deleteScheduleError: null,
@@ -113,6 +116,29 @@ export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid,
       });
 
     return createdSchedule;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const updateSchedule = createAsyncThunk("UPDATE_SCHEDULE", async ({ uid, projectName, content, title }) => {
+  try {
+    const emptyProjectName = projectName.replace('-', ' ');
+
+    await firestore.collection('users').doc(uid)
+      .collection('project').doc(emptyProjectName)
+      .update({
+        [title]: {
+          project: emptyProjectName,
+          content,
+          createdAt: dayjs().format("YY.MM.DD"),
+          status: false,
+          title,
+          comment: {},
+        },
+      });
   } catch (error) {
     if (error.code) {
       throw error.code;
@@ -219,6 +245,19 @@ const projectSlice = createSlice({
     [addNewSchedule.rejected]: (state, action) => {
       state.addNewScheduleLoading = false;
       state.addNewScheduleError = action.error.message;
+    },
+    [updateSchedule.pending]: (state) => {
+      state.updateScheduleLoading = true;
+      state.updateScheduleDone = false;
+      state.updateScheduleError = null;
+    },
+    [updateSchedule.fulfilled]: (state, action) => {
+      state.updateScheduleLoading = false;
+      state.updateScheduleDone = true;
+    },
+    [updateSchedule.rejected]: (state, action) => {
+      state.updateScheduleLoading = false;
+      state.updateScheduleError = action.error.message;
     },
     [deleteSchedule.pending]: (state) => {
       state.deleteScheduleLoading = true;
