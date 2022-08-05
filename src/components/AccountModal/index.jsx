@@ -15,8 +15,8 @@ const AccountModal = ({ setAccountModal }) => {
   }, []);
 
   const onClickLogout = useCallback(async () => {
-    await dispatch(userLogout());
     await navigate('/');
+    await dispatch(userLogout());
   }, [dispatch, navigate]);
 
   return (

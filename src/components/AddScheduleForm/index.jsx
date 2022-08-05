@@ -1,8 +1,10 @@
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {memo, useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {convertToRaw, EditorState, convertFromHTML, ContentState} from "draft-js";
+import swal from 'sweetalert';
 import {
-  Background,
+  Background, CtrlButton, CtrlButtonWrapper,
   ScheduleContent,
   ScheduleWrapper,
   SubMenu,
@@ -25,6 +27,7 @@ const AddScheduleForm = () => {
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
   const [title, onChangeTitle, setTitle] = useInput('');
   const [content, setContent] = useState('');
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const { projectList, scheduleView } = useSelector((state) => state.project);
 
   useEffect(() => {
@@ -35,15 +38,18 @@ const AddScheduleForm = () => {
         scheduleName: params.schedule,
       }));
       setTitle(scheduleView?.title);
-      setContent(scheduleView?.content);
+      setEditorState(() => EditorState.createWithContent(
+        ContentState.createFromBlockArray(
+          convertFromHTML(scheduleView?.content),
+        ),
+      ));
     }
-  }, [userInfo.uid, params.project, params.scheduleName]);
-
-  const onChangeContent = useCallback((value) => {
-    setContent(value);
-  }, []);
+  }, [userInfo.uid, params.project, editorState, params.scheduleName]);
 
   const onClickAddSchedule = useCallback(async () => {
+    if (!title) return swal("업로드 에러", "제목을 입력해주세요", "error");
+    if (!content || content.length < 10) return swal("업로드 에러", "내용은 10자 이상 입력해주세요", "error");
+
     await dispatch(addNewSchedule({
       uid: userInfo.uid,
       projectName: params.project,
@@ -54,6 +60,9 @@ const AddScheduleForm = () => {
   }, [dispatch, userInfo.uid, params.project, title, content]);
 
   const onClickUpdateSchedule = useCallback(async () => {
+    if (!title) return swal("업로드 에러", "제목을 입력해주세요", "error");
+    if (!content || content === '<p></p>') return swal("업로드 에러", "내용은 10자 이상 입력해주세요", "error");
+
     await dispatch(updateSchedule({
       uid: userInfo.uid,
       projectName: params.project,
@@ -66,21 +75,28 @@ const AddScheduleForm = () => {
   return (
     <Background>
       <SubMenu>
-        {
-          location.pathname.includes('/update')
-            ? <button type="button" onClick={onClickUpdateSchedule}>스케줄 수정하기</button>
-            : <button type="button" onClick={onClickAddSchedule}>스케줄 저장하기</button>
-        }
+        <CtrlButtonWrapper>
+          {
+            location.pathname.includes('/update')
+              ? <CtrlButton type="button" onClick={onClickUpdateSchedule}>스케줄 수정하기</CtrlButton>
+              : <CtrlButton type="button" onClick={onClickAddSchedule}>스케줄 저장하기</CtrlButton>
+          }
+        </CtrlButtonWrapper>
       </SubMenu>
       <ScheduleWrapper>
         <FormWrapper>
           <input
             type="text"
-            value={title}
+            value={title || ''}
             onChange={onChangeTitle}
             placeholder="할 일을 입력해주세요..."
           />
-          <TextEditor value={content} onChange={onChangeContent} />
+          <TextEditor
+            editorState={editorState}
+            setEditorState={setEditorState}
+            content={content}
+            setContent={setContent}
+          />
         </FormWrapper>
       </ScheduleWrapper>
     </Background>

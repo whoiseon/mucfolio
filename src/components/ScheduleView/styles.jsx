@@ -30,6 +30,27 @@ export const CtrlButton = styled.button`
   }
 `;
 
+export const SaveSchedule = styled.div`
+  border-top: 1px solid ${BACKGROUND_LINE};
+  button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-right: 1px solid ${BACKGROUND_LINE};
+    background-color: ${(props) => (props.status ? MAIN_COLOR : BACKGROUND_COLOR)};
+    color: ${WHITE_COLOR};
+    font-size: 14px;
+    cursor: pointer;
+    padding: 15px 40px;
+    transition: background-color 0.15s ease;
+    &:hover {
+      background-color: ${(props) => (props.status ? '#593AB9' : BACKGROUND_BLACK_COLOR)};;
+    }
+    img {
+      margin-right: 12px;
+    }
+`;
+
 export const ScheduleWrapper = styled.div`
   display: flex;
   flex-direction: column;
