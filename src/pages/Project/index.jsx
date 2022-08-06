@@ -8,6 +8,7 @@ import ProjectItem from "../../components/ProjectItem";
 import {getUserProject} from "../../slices/projectSlice";
 import AddProjectForm from "../../components/AddProjectForm";
 import AddScheduleForm from "../../components/AddScheduleForm";
+import ProjectLoading from "../../components/ProjectLoading";
 
 const Project = ({ children }) => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const Project = ({ children }) => {
           <List>
             {
               userProjectLoading
-                ? <div>프로젝트 불러오는중...</div>
+                ? <ProjectLoading />
                 : projectList?.map((data, i) => {
                   return <ProjectItem key={data.projectName} projectData={data} />;
                 })
