@@ -2,6 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import ArticleIcon from '@mui/icons-material/Article';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {MenuButton, MenuList, MenuWrapper} from "./styles";
@@ -28,6 +29,7 @@ const LeftMenu = () => {
         <MoreHorizIcon />
       </MenuButton>
       <MenuList isLocation={location.pathname}>
+        <MenuItem name="홈" link="/" icon={<DashboardIcon />} />
         <MenuItem name="프로젝트" link="/project" icon={<ArticleIcon />} />
         <MenuItem name="빠른 메모" link="/memo" icon={<AssignmentTurnedInIcon />} />
       </MenuList>

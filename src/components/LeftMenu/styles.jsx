@@ -32,6 +32,18 @@ export const MenuList = styled.div`
   background-color: ${BACKGROUND_COLOR};
   div:nth-of-type(1) {
     color: ${(props) => (
+    props.isLocation === '/'
+      ? WHITE_COLOR
+      : '#646B74'
+  )};
+    background-color: ${(props) => (
+    props.isLocation === '/'
+      ? '#2B3136'
+      : BACKGROUND_COLOR
+  )};
+  }
+  div:nth-of-type(2) {
+    color: ${(props) => (
     props.isLocation === '/project'
       ? WHITE_COLOR
       : '#646B74'
@@ -42,7 +54,7 @@ export const MenuList = styled.div`
       : BACKGROUND_COLOR
   )};
   }
-  div:nth-of-type(2) {
+  div:nth-of-type(3) {
     color: ${(props) => (
     props.isLocation === '/memo'
       ? WHITE_COLOR
