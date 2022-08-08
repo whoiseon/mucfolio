@@ -10,6 +10,16 @@ import {getUserProject} from "../../slices/projectSlice";
 import {SkeletonWrapper} from "../../components/ScheduleView/styles";
 import ProjectLoading from "../../components/ProjectLoading";
 
+const changeEmptyString = (text) => {
+  const dashString = text.replace(' ', '-');
+  return dashString;
+};
+
+const changeDashString = (text) => {
+  const emptyString = text.replace('-', ' ');
+  return emptyString;
+};
+
 const Workspace = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,14 +48,25 @@ const Workspace = () => {
                 {
                   userProjectLoading
                     ? <ProjectLoading />
-                    : projectList?.map((data, i) => {
-                      return (
-                        <Link to="/project">
-                          <ArticleIcon />
-                          { data.projectName }
-                        </Link>
-                      );
-                    })
+                    : (
+                      projectList?.length <= 0
+                        ? (
+                          <Link to="/project">
+                            <ArticleIcon />
+                            새 프로젝트 만들러가기
+                          </Link>
+                        )
+                        : (
+                          projectList?.map((data, i) => {
+                            return (
+                              <Link to={`/project/${changeEmptyString(data.projectName)}`}>
+                                <ArticleIcon />
+                                { data.projectName }
+                              </Link>
+                            );
+                          })
+                        )
+                    )
                 }
               </div>
             </MyProject>

@@ -59,11 +59,15 @@ export const MyProject = styled.div`
   & > div:nth-of-type(2) {
     display: flex;
     flex-direction: column;
+    & > p {
+      padding: 12px;
+      color: red;
+    }
     a {
       display: flex;
       align-items: center;
-      font-size: 16px;
-      font-weight: 400;
+      font-size: 14px;
+      font-weight: 600;
       padding: 8px 12px;
       color: ${GRAY_COLOR};
       transition: background-color, color 0.15s ease;

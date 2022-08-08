@@ -20,7 +20,7 @@ export const DefaultViewWrapper = styled.div`
   height: 100%;
   h1 {
     margin-top: 40px;
-    font-size: 26px;
+    font-size: 20px;
     opacity: 0.5;
     animation: ${DefaultViewTextAnimation} 0.6s ease-in-out;
   }
@@ -42,7 +42,7 @@ export const LogoWrapper = styled.div`
   align-items: center;
   justify-content: center;
   img {
-    width: 220px;
+    width: 180px;
     z-index: 99;
     animation: ${LogoAnimation} 0.6s ease-in-out;
   }

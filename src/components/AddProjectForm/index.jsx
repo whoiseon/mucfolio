@@ -1,4 +1,4 @@
-import {memo, useCallback} from "react";
+import {memo, useCallback, useEffect, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {Background, CloseArea} from "./styles";
 import useInput from "../../hooks/useInput";
@@ -6,8 +6,13 @@ import {addNewProject} from "../../slices/projectSlice";
 
 const AddProjectForm = ({ setShowAddProjectModal }) => {
   const dispatch = useDispatch();
+  const inputRef = useRef();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
   const [projectName, onChangeProjectName, setProjectName] = useInput('');
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const onSubmitAddProject = useCallback(async (e) => {
     e.preventDefault();
@@ -29,7 +34,7 @@ const AddProjectForm = ({ setShowAddProjectModal }) => {
       <Background>
         <h1>새 프로젝트</h1>
         <form onSubmit={onSubmitAddProject}>
-          <input type="text" value={projectName} onChange={onChangeProjectName} />
+          <input ref={inputRef} type="text" value={projectName} onChange={onChangeProjectName} />
         </form>
       </Background>
     </CloseArea>

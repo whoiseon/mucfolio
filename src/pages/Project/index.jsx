@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation} from "react-router-dom";
+import {useLocation, Link} from "react-router-dom";
 import AppLayout from "../../components/AppLayout";
 import {AddProjectButton, List, ProjectList, ProjectWrapper} from "./styles";
 import ScheduleView from "../../components/ScheduleView";
@@ -9,6 +9,17 @@ import {getUserProject} from "../../slices/projectSlice";
 import AddProjectForm from "../../components/AddProjectForm";
 import AddScheduleForm from "../../components/AddScheduleForm";
 import ProjectLoading from "../../components/ProjectLoading";
+import EmptyProjectView from "../../components/EmptyProjectView";
+
+const changeEmptyString = (text) => {
+  const dashString = text.replace(' ', '-');
+  return dashString;
+};
+
+const changeDashString = (text) => {
+  const emptyString = text.replace('-', ' ');
+  return emptyString;
+};
 
 const Project = ({ children }) => {
   const dispatch = useDispatch();
@@ -31,18 +42,26 @@ const Project = ({ children }) => {
     <AppLayout>
       <ProjectWrapper>
         <ProjectList>
-          <List>
-            {
-              userProjectLoading
-                ? <ProjectLoading />
-                : projectList?.map((data, i) => {
-                  return <ProjectItem key={data.projectName} projectData={data} />;
-                })
-            }
-          </List>
-          <AddProjectButton onClick={onShowAddProjectModal}>
-            + 새 프로젝트
-          </AddProjectButton>
+          {
+            projectList.length <= 0
+              ? <EmptyProjectView onShowAddProjectModal={onShowAddProjectModal} />
+              : (
+                <>
+                  <List>
+                    {
+                      userProjectLoading
+                        ? <ProjectLoading />
+                        : projectList?.map((data, i) => {
+                          return <ProjectItem projectData={data} key={data.projectName} />;
+                        })
+                    }
+                  </List>
+                  <AddProjectButton onClick={onShowAddProjectModal}>
+                    + 새 프로젝트
+                  </AddProjectButton>
+                </>
+              )
+          }
         </ProjectList>
         {
           location.pathname.includes('/new-schedule') || location.pathname.includes('/update')

@@ -26,6 +26,9 @@ const initialState = {
   deleteScheduleLoading: false,
   deleteScheduleDone: false,
   deleteScheduleError: null,
+  deleteProjectLoading: false,
+  deleteProjectDone: false,
+  deleteProjectError: null,
 };
 
 export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid }) => {
@@ -139,6 +142,20 @@ export const updateSchedule = createAsyncThunk("UPDATE_SCHEDULE", async ({ uid, 
           comment: {},
         },
       });
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const deleteProject = createAsyncThunk("DELETE_PROJECT", async ({ uid, projectName }) => {
+  try {
+    await firestore.collection('users').doc(uid)
+      .collection('project').doc(projectName)
+      .delete();
+
+    return projectName;
   } catch (error) {
     if (error.code) {
       throw error.code;
@@ -271,6 +288,21 @@ const projectSlice = createSlice({
     [deleteSchedule.rejected]: (state, action) => {
       state.deleteScheduleLoading = false;
       state.deleteScheduleError = action.error.message;
+    },
+    [deleteProject.pending]: (state) => {
+      state.deleteProjectLoading = true;
+      state.deleteProjectDone = false;
+      state.deleteProjectError = null;
+    },
+    [deleteProject.fulfilled]: (state, action) => {
+      const filter = state.projectList.filter((v) => v.projectName !== action.payload);
+      state.deleteProjectLoading = false;
+      state.deleteProjectDone = true;
+      state.projectList = filter;
+    },
+    [deleteProject.rejected]: (state, action) => {
+      state.deleteProjectLoading = false;
+      state.deleteProjectError = action.error.message;
     },
   },
 });
