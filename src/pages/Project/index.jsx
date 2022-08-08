@@ -11,16 +11,6 @@ import AddScheduleForm from "../../components/AddScheduleForm";
 import ProjectLoading from "../../components/ProjectLoading";
 import EmptyProjectView from "../../components/EmptyProjectView";
 
-const changeEmptyString = (text) => {
-  const dashString = text.replace(' ', '-');
-  return dashString;
-};
-
-const changeDashString = (text) => {
-  const emptyString = text.replace('-', ' ');
-  return emptyString;
-};
-
 const Project = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -43,14 +33,14 @@ const Project = ({ children }) => {
       <ProjectWrapper>
         <ProjectList>
           {
-            projectList.length <= 0
-              ? <EmptyProjectView onShowAddProjectModal={onShowAddProjectModal} />
+            userProjectLoading
+              ? <ProjectLoading />
               : (
                 <>
                   <List>
                     {
-                      userProjectLoading
-                        ? <ProjectLoading />
+                      projectList <= 0
+                        ? <EmptyProjectView onShowAddProjectModal={onShowAddProjectModal} />
                         : projectList?.map((data, i) => {
                           return <ProjectItem projectData={data} key={data.projectName} />;
                         })

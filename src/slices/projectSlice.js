@@ -61,8 +61,8 @@ export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid 
 
 export const getUserSchedule = createAsyncThunk("GET_USER_SCHEDULE", async ({ uid, projectName, scheduleName }) => {
   try {
-    const emptyProjectName = projectName.replace('-', ' ');
-    const emptyScheduleName = scheduleName.replace('-', ' ');
+    const emptyProjectName = projectName.replaceAll('-', ' ');
+    const emptyScheduleName = scheduleName.replaceAll('-', ' ');
     const response = await firestore.collection('users').doc(uid)
       .collection('project').doc(emptyProjectName)
       .get();
@@ -97,7 +97,7 @@ export const addNewProject = createAsyncThunk("ADD_NEW_PROJECT", async ({ uid, p
 
 export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid, projectName, content, title }) => {
   try {
-    const emptyProjectName = projectName.replace('-', ' ');
+    const emptyProjectName = projectName.replaceAll('-', ' ');
     const createdSchedule = {
       project: emptyProjectName,
       content,
@@ -128,7 +128,7 @@ export const addNewSchedule = createAsyncThunk("ADD_NEW_SCHEDULE", async ({ uid,
 
 export const updateSchedule = createAsyncThunk("UPDATE_SCHEDULE", async ({ uid, projectName, content, title }) => {
   try {
-    const emptyProjectName = projectName.replace('-', ' ');
+    const emptyProjectName = projectName.replaceAll('-', ' ');
 
     await firestore.collection('users').doc(uid)
       .collection('project').doc(emptyProjectName)
@@ -165,8 +165,8 @@ export const deleteProject = createAsyncThunk("DELETE_PROJECT", async ({ uid, pr
 
 export const deleteSchedule = createAsyncThunk("DELETE_SCHEDULE", async ({ uid, projectName, scheduleName }) => {
   try {
-    const emptyProjectName = projectName.replace('-', ' ');
-    const emptyScheduleName = scheduleName.replace('-', ' ');
+    const emptyProjectName = projectName.replaceAll('-', ' ');
+    const emptyScheduleName = scheduleName.replaceAll('-', ' ');
 
     const response = await firestore.collection('users').doc(uid)
       .collection('project').doc(emptyProjectName)
@@ -187,8 +187,8 @@ export const deleteSchedule = createAsyncThunk("DELETE_SCHEDULE", async ({ uid, 
 
 export const scheduleCheck = createAsyncThunk("SCHEDULE_CHECK", async ({ uid, projectName, scheduleName, checked }) => {
   try {
-    const emptyProjectName = projectName.replace('-', ' ');
-    const emptyScheduleName = scheduleName.replace('-', ' ');
+    const emptyProjectName = projectName.replaceAll('-', ' ');
+    const emptyScheduleName = scheduleName.replaceAll('-', ' ');
     await firestore.collection('users').doc(uid)
       .collection('project').doc(emptyProjectName)
       .update({

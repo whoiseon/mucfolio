@@ -2,23 +2,11 @@ import {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, Link} from "react-router-dom";
 import ArticleIcon from '@mui/icons-material/Article';
-import {Stack, Skeleton} from "@mui/material";
-import {userLogout} from "../../slices/userSlice";
 import AppLayout from "../../components/AppLayout";
 import {DashboardWrapper, Background, Dashboard, MyProject, MyMemo} from "./styles";
 import {getUserProject} from "../../slices/projectSlice";
-import {SkeletonWrapper} from "../../components/ScheduleView/styles";
 import ProjectLoading from "../../components/ProjectLoading";
-
-const changeEmptyString = (text) => {
-  const dashString = text.replace(' ', '-');
-  return dashString;
-};
-
-const changeDashString = (text) => {
-  const emptyString = text.replace('-', ' ');
-  return emptyString;
-};
+import changeSpaceToDash from "../../utils/changeSpaceToDash";
 
 const Workspace = () => {
   const dispatch = useDispatch();
@@ -59,7 +47,7 @@ const Workspace = () => {
                         : (
                           projectList?.map((data, i) => {
                             return (
-                              <Link to={`/project/${changeEmptyString(data.projectName)}`}>
+                              <Link to={`/project/${changeSpaceToDash(data.projectName)}`}>
                                 <ArticleIcon />
                                 { data.projectName }
                               </Link>

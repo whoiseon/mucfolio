@@ -13,11 +13,7 @@ import useInput from "../../hooks/useInput";
 import TextEditor from "../TextEditor";
 import {addNewSchedule, getUserSchedule, updateSchedule} from "../../slices/projectSlice";
 import {FormWrapper} from "./styles";
-
-const changeEmptyString = (text) => {
-  const dashString = text.replace(' ', '-');
-  return dashString;
-};
+import changeSpaceToDash from "../../utils/changeSpaceToDash";
 
 const AddScheduleForm = () => {
   const dispatch = useDispatch();
@@ -56,7 +52,7 @@ const AddScheduleForm = () => {
       title,
       content,
     }));
-    await navigate(`${params.project}/${changeEmptyString(title)}`);
+    await navigate(`${params.project}/${changeSpaceToDash(title)}`);
   }, [dispatch, userInfo.uid, params.project, title, content]);
 
   const onClickUpdateSchedule = useCallback(async () => {
@@ -69,7 +65,7 @@ const AddScheduleForm = () => {
       title,
       content,
     }));
-    await navigate(`${params.project}/${changeEmptyString(title)}`);
+    await navigate(`${params.project}/${changeSpaceToDash(title)}`);
   }, [dispatch, userInfo.uid, params.project, title, content]);
 
   return (

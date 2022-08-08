@@ -10,18 +10,14 @@ import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import {ProjectButton, ProjectCtrlBtn} from "../../pages/Project/styles";
 import {ItemWrapper, ProjectDetail, ScheduleButton} from "./styles";
 import {deleteProject} from "../../slices/projectSlice";
-
-const changeEmptyString = (text) => {
-  const dashString = text.replace(' ', '-');
-  return dashString;
-};
+import changeSpaceToDash from "../../utils/changeSpaceToDash";
 
 const ProjectItem = ({ projectData }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
   const { projectList } = useSelector((state) => state.project);
-
+  console.log(projectData);
   const [projectOpen, setProjectOpen] = useState(false);
   const [showCtrlBtn, setShowCtrlBtn] = useState(false);
 
@@ -61,7 +57,7 @@ const ProjectItem = ({ projectData }) => {
 
   return (
     <ItemWrapper>
-      <Link to={`/project/${changeEmptyString(projectData.projectName)}`}>
+      <Link to={`/project/${changeSpaceToDash(projectData.projectName)}`}>
         <ProjectButton
           onClick={showProject}
           onMouseEnter={onMouseShowIcon}
@@ -89,7 +85,7 @@ const ProjectItem = ({ projectData }) => {
             {
               projectData?.schedule.map((schedule, i) => {
                 return (
-                  <Link to={`/project/${changeEmptyString(projectData?.projectName)}/${changeEmptyString(schedule.title)}`} key={schedule.title}>
+                  <Link to={`/project/${changeSpaceToDash(projectData?.projectName)}/${changeSpaceToDash(schedule.title)}`} key={schedule.title}>
                     <ScheduleButton status={schedule.status}>
                       {
                         schedule.status
@@ -113,7 +109,7 @@ const ProjectItem = ({ projectData }) => {
                 );
               })
             }
-            <Link to={`${changeEmptyString(projectData.projectName)}/new-schedule`}>
+            <Link to={`${changeSpaceToDash(projectData.projectName)}/new-schedule`}>
               <ScheduleButton>
                 + 스케줄 추가
               </ScheduleButton>
