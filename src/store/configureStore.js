@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {createLogger} from "redux-logger";
 import userSlice from "../slices/userSlice";
 import projectSlice from "../slices/projectSlice";
+import memoSlice from "../slices/memoSlice";
 
 const logger = createLogger();
 const devMode = 'development';
@@ -9,6 +10,7 @@ const devMode = 'development';
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   project: projectSlice.reducer,
+  memo: memoSlice.reducer,
 });
 
 const initialState = {};

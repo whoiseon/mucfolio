@@ -2,6 +2,7 @@ import {memo, useCallback, useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Stack, Skeleton} from "@mui/material";
+import swal from "sweetalert";
 import {
   Background,
   CommentWrapper, CtrlButton, CtrlButtonWrapper,
@@ -11,7 +12,7 @@ import {
   SkeletonWrapper,
   SubMenu,
 } from "./styles";
-import {deleteSchedule, getUserProject, getUserSchedule, scheduleCheck} from "../../slices/projectSlice";
+import {deleteProject, deleteSchedule, getUserProject, getUserSchedule, scheduleCheck} from "../../slices/projectSlice";
 import DefaultView from "../DefaultView";
 
 const ProjectView = () => {
@@ -41,16 +42,29 @@ const ProjectView = () => {
     }));
   }, [dispatch, checked, userInfo.uid, params.project, params.schedule]);
 
-  const onClickDeleteSchedule = useCallback(async () => {
-    await dispatch(deleteSchedule({
-      uid: userInfo.uid,
-      projectName: params.project,
-      scheduleName: params.schedule,
-    }));
-    await navigate('/project');
-    await dispatch(getUserProject({
-      uid: userInfo.uid,
-    }));
+  const onClickDeleteSchedule = useCallback(() => {
+    swal({
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제한 프로젝트와 스케줄은 복구할 수 없습니다!",
+      icon: "warning",
+      buttons: ["취소", "삭제"],
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          dispatch(deleteSchedule({
+            uid: userInfo.uid,
+            projectName: params.project,
+            scheduleName: params.schedule,
+          }));
+          navigate('/project');
+          dispatch(getUserProject({
+            uid: userInfo.uid,
+          }));
+        } else {
+          return false;
+        }
+      });
   }, [dispatch, userInfo.uid, params.project, params.schedule, navigate]);
 
   if (scheduleView === undefined) {

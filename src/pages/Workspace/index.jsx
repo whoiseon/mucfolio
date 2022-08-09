@@ -47,7 +47,7 @@ const Workspace = () => {
                         : (
                           projectList?.map((data, i) => {
                             return (
-                              <Link to={`/project/${changeSpaceToDash(data.projectName)}`}>
+                              <Link to={`/project/${changeSpaceToDash(data.projectName)}`} key={changeSpaceToDash(data.projectName)}>
                                 <ArticleIcon />
                                 { data.projectName }
                               </Link>

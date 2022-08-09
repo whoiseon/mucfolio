@@ -11,13 +11,14 @@ import {ProjectButton, ProjectCtrlBtn} from "../../pages/Project/styles";
 import {ItemWrapper, ProjectDetail, ScheduleButton} from "./styles";
 import {deleteProject} from "../../slices/projectSlice";
 import changeSpaceToDash from "../../utils/changeSpaceToDash";
+import changeDashToSpace from "../../utils/changeDashToSpace";
 
 const ProjectItem = ({ projectData }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
   const { projectList } = useSelector((state) => state.project);
-  console.log(projectData);
+
   const [projectOpen, setProjectOpen] = useState(false);
   const [showCtrlBtn, setShowCtrlBtn] = useState(false);
 
@@ -57,28 +58,26 @@ const ProjectItem = ({ projectData }) => {
 
   return (
     <ItemWrapper>
-      <Link to={`/project/${changeSpaceToDash(projectData.projectName)}`}>
-        <ProjectButton
-          onClick={showProject}
-          onMouseEnter={onMouseShowIcon}
-          onMouseLeave={onMouseHideIcon}
-        >
-          <span>{projectData.projectName}</span>
-          {
-            showCtrlBtn
-              ? (
-                <ProjectCtrlBtn onClick={onClickDeleteProject}>
-                  <BackspaceIcon />
-                </ProjectCtrlBtn>
-              )
-              : (
-                projectOpen
-                  ? <ExpandLessIcon />
-                  : <ExpandMoreIcon />
-              )
-          }
-        </ProjectButton>
-      </Link>
+      <ProjectButton
+        onClick={showProject}
+        onMouseEnter={onMouseShowIcon}
+        onMouseLeave={onMouseHideIcon}
+      >
+        <span>{projectData.projectName}</span>
+        {
+          showCtrlBtn
+            ? (
+              <ProjectCtrlBtn onClick={onClickDeleteProject}>
+                <BackspaceIcon />
+              </ProjectCtrlBtn>
+            )
+            : (
+              projectOpen
+                ? <ExpandLessIcon />
+                : <ExpandMoreIcon />
+            )
+        }
+      </ProjectButton>
       {
         projectOpen && (
           <ProjectDetail>
