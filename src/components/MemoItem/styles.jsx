@@ -6,6 +6,7 @@ export const ItemWrapper = styled.div`
   align-items: center;
   padding: 16px 0;
   background-color: ${BACKGROUND_COLOR};
+  position: relative;
 `;
 
 export const MemoContent = styled.div`

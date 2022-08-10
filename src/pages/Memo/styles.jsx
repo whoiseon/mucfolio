@@ -13,12 +13,14 @@ export const MemoWrapper = styled.div`
   flex-direction: column;
   min-width: 800px;
   max-width: 600px;
+  height: 100%;
   overflow-y: scroll;
   margin: 0 auto;
   padding-top: 80px;
 `;
 
 export const MemoList = styled.div`
+  height: 100%;
   & > div:not(:last-of-type) {
     border-bottom: 1px solid ${BACKGROUND_LINE};
   }
