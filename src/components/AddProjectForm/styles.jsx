@@ -1,5 +1,17 @@
 import styled from "@emotion/styled";
+import {keyframes} from "@emotion/react";
 import {BACKGROUND_BLACK_COLOR, BACKGROUND_COLOR, BACKGROUND_LINE, WHITE_COLOR} from "../../styles/common";
+
+const MemoModalAnimation = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
 
 export const CloseArea = styled.div`
   position: absolute;
@@ -8,6 +20,7 @@ export const CloseArea = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  animation: ${MemoModalAnimation} 0.16s ease;
 `;
 
 export const Background = styled.div`

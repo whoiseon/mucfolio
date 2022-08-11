@@ -18,7 +18,7 @@ export const Background = styled.div`
   z-index: 9999;
   top: 62px;
   right: 16px;
-  animation: ${MemoModalAnimation} 0.16s ease;
+  animation: ${MemoModalAnimation} 0.15s ease;
 `;
 
 export const ModalWrapper = styled.div`

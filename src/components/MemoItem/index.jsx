@@ -5,7 +5,7 @@ import scheduleCheckImg from '../../assets/schedule_check_white.svg';
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import MemoCtrlModal from "../MemoCtrlModal";
 
-const MemoItem = () => {
+const MemoItem = ({ memoData }) => {
   const [memoCheck, setMemoCheck] = useState(false);
   const [showCtrlModal, setShowCtrlModal] = useState(false);
 
@@ -28,8 +28,8 @@ const MemoItem = () => {
         }
       </CheckWrapper>
       <MemoContent status={memoCheck}>
-        <p>React 강의 듣기</p>
-        <p>11.09</p>
+        <p>{ memoData.content }</p>
+        <p>{ memoData.createdAt }</p>
       </MemoContent>
       <CtrlBtnWrapper onClick={onClickShowCtrlModal}>
         <MoreHorizIcon />
