@@ -25,4 +25,9 @@ export const ModalWrapper = styled.div`
   background-color: ${BACKGROUND_BLACK_COLOR};
   padding: 16px 20px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.15s ease-in;
+  &:hover, &:active {
+    background-color: #1E2326;
+  }
 `;

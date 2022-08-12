@@ -93,7 +93,7 @@ export const MyMemo = styled.div`
     border-bottom: 1px solid ${BACKGROUND_LINE};
     margin-bottom: 20px;
     h2 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 500;
     }
     span {
@@ -102,8 +102,28 @@ export const MyMemo = styled.div`
     }
   }
   & > div:nth-of-type(2) {
-    font-size: 14px;
-    font-weight: 400;
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    & > p {
+      padding: 12px;
+      color: red;
+    }
+    a {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      color: ${GRAY_COLOR};
+      transition: background-color, color 0.15s ease;
+      svg {
+        font-size: 16px;
+        margin-right: 8px;
+      }
+      &:hover {
+        color: ${WHITE_COLOR};
+        background-color: ${BACKGROUND_BLACK_COLOR};
+      }
+    }
   }
 `;

@@ -10,6 +10,9 @@ const initialState = {
   addNewMemoLoading: false,
   addNewMemoDone: false,
   addNewMemoError: null,
+  deleteMemoLoading: false,
+  deleteMemoDone: false,
+  deleteMemoError: null,
 };
 
 export const getUserMemo = createAsyncThunk("GET_USER_MEMO", async ({ uid }) => {
@@ -51,6 +54,20 @@ export const addNewMemo = createAsyncThunk("ADD_NEW_MEMO", async ({ uid, memo })
   }
 });
 
+export const deleteMemo = createAsyncThunk("DELETE_MEMO", async ({ uid, memo }) => {
+  try {
+    const response = await firestore.collection('users').doc(uid)
+      .collection('memo').doc(memo)
+      .delete();
+
+    return memo;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
 const memoSlice = createSlice({
   name: 'memo',
   initialState,
@@ -83,6 +100,20 @@ const memoSlice = createSlice({
     [addNewMemo.rejected]: (state, action) => {
       state.addNewMemoLoading = false;
       state.addNewMemoError = action.error.message;
+    },
+    [deleteMemo.pending]: (state) => {
+      state.deleteMemoLoading = true;
+      state.deleteMemoDone = false;
+      state.deleteMemoError = null;
+    },
+    [deleteMemo.fulfilled]: (state, action) => {
+      state.deleteMemoLoading = false;
+      state.deleteMemoDone = true;
+      state.memoList = state.memoList.filter((v) => v.content !== action.payload);
+    },
+    [deleteMemo.rejected]: (state, action) => {
+      state.deleteMemoLoading = false;
+      state.deleteMemoError = action.error.message;
     },
   },
 });

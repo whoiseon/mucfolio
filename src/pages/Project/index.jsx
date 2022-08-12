@@ -34,7 +34,7 @@ const Project = ({ children }) => {
         <ProjectList>
           {
             userProjectLoading
-              ? <ProjectLoading />
+              ? <ProjectLoading content="프로젝트" />
               : (
                 <>
                   <List>

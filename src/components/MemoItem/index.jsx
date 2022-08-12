@@ -34,7 +34,11 @@ const MemoItem = ({ memoData }) => {
       <CtrlBtnWrapper onClick={onClickShowCtrlModal}>
         <MoreHorizIcon />
       </CtrlBtnWrapper>
-      { showCtrlModal && <MemoCtrlModal setShowCtrlModal={setShowCtrlModal} /> }
+      {
+        showCtrlModal && (
+          <MemoCtrlModal setShowCtrlModal={setShowCtrlModal} memo={memoData.content} />
+        )
+      }
     </ItemWrapper>
   );
 };
