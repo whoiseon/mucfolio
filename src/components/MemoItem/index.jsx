@@ -1,17 +1,26 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
 import {CheckWrapper, CtrlBtnWrapper, ItemWrapper, MemoContent} from "./styles";
 import scheduleCheckImg from '../../assets/schedule_check_white.svg';
 import scheduleCheckOkImg from '../../assets/schedule_check_ok.svg';
 import MemoCtrlModal from "../MemoCtrlModal";
+import {memoCheck} from "../../slices/memoSlice";
 
 const MemoItem = ({ memoData }) => {
-  const [memoCheck, setMemoCheck] = useState(false);
+  const dispatch = useDispatch();
+  const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
+  const [checked, setChecked] = useState(false);
   const [showCtrlModal, setShowCtrlModal] = useState(false);
 
   const onClickCheck = useCallback(() => {
-    setMemoCheck((prev) => !prev);
-  }, []);
+    dispatch(memoCheck({
+      uid: userInfo.uid,
+      memo: memoData.content,
+      checked,
+    }));
+    setChecked((prev) => !prev);
+  }, [dispatch, memoData.content, checked]);
 
   const onClickShowCtrlModal = useCallback(() => {
     setShowCtrlModal((prev) => !prev);
@@ -19,15 +28,15 @@ const MemoItem = ({ memoData }) => {
 
   return (
     <ItemWrapper>
-      <CheckWrapper onClick={onClickCheck} status={memoCheck}>
+      <CheckWrapper onClick={onClickCheck} status={memoData.status}>
         {
-          memoCheck
+          memoData.status
             ? <img src={scheduleCheckOkImg} alt="scheduleCheckOkImg" />
             : <img src={scheduleCheckImg} alt="scheduleCheckImg" />
 
         }
       </CheckWrapper>
-      <MemoContent status={memoCheck}>
+      <MemoContent status={memoData.status}>
         <p>{ memoData.content }</p>
         <p>{ memoData.createdAt }</p>
       </MemoContent>

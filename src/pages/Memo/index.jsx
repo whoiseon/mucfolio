@@ -5,11 +5,12 @@ import {Background, MemoHeader, MemoList, MemoWrapper} from "./styles";
 import MemoItem from "../../components/MemoItem";
 import AddMemoForm from "../../components/AddMemoForm";
 import {getUserMemo} from "../../slices/memoSlice";
+import ProjectLoading from "../../components/ProjectLoading";
 
 const Memo = () => {
   const dispatch = useDispatch();
   const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
-  const { memoList } = useSelector((state) => state.memo);
+  const { memoList, getUserMemosLoading } = useSelector((state) => state.memo);
   const [showAddMemoModal, setShowAddMemoModal] = useState(false);
 
   useEffect(() => {
@@ -32,9 +33,13 @@ const Memo = () => {
           </MemoHeader>
           <MemoList>
             {
-              memoList?.map((memo, i) => {
-                return <MemoItem key={memo.content} memoData={memo} />;
-              })
+              getUserMemosLoading
+                ? <ProjectLoading content="메모" />
+                : (
+                  memoList?.map((memo, i) => {
+                    return <MemoItem key={memo.content} memoData={memo} />;
+                  })
+                )
             }
           </MemoList>
         </MemoWrapper>

@@ -40,6 +40,7 @@ export const addNewMemo = createAsyncThunk("ADD_NEW_MEMO", async ({ uid, memo })
     const newMemo = {
       content: memo,
       createdAt: dayjs().format("MM.DD"),
+      status: false,
     };
 
     await firestore.collection('users').doc(uid)
@@ -61,6 +62,20 @@ export const deleteMemo = createAsyncThunk("DELETE_MEMO", async ({ uid, memo }) 
       .delete();
 
     return memo;
+  } catch (error) {
+    if (error.code) {
+      throw error.code;
+    }
+  }
+});
+
+export const memoCheck = createAsyncThunk("MEMO_CHECK", async ({ uid, memo, checked }) => {
+  try {
+    await firestore.collection('users').doc(uid)
+      .collection('memo').doc(memo)
+      .update({
+        status: !checked,
+      });
   } catch (error) {
     if (error.code) {
       throw error.code;
