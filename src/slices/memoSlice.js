@@ -21,6 +21,7 @@ export const getUserMemo = createAsyncThunk("GET_USER_MEMO", async ({ uid }) => 
 
     const memos = await firestore.collection('users').doc(uid)
       .collection('memo')
+      .orderBy("createdAt", "asc")
       .get();
 
     memos.forEach((doc) => {
