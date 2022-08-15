@@ -1,5 +1,12 @@
 import styled from "@emotion/styled";
-import {BACKGROUND_BLACK_COLOR, BACKGROUND_COLOR, BACKGROUND_LINE, MAIN_COLOR, WHITE_COLOR} from "../../styles/common";
+import {
+  BACKGROUND_BLACK_COLOR,
+  BACKGROUND_COLOR,
+  BACKGROUND_LINE,
+  GRAY_COLOR,
+  MAIN_COLOR,
+  WHITE_COLOR,
+} from "../../styles/common";
 
 export const Background = styled.div`
   display: flex;
@@ -12,6 +19,7 @@ export const Background = styled.div`
 export const EmptyProjectWrapper = styled.div`
   margin: 0 auto;
   h1 {
+    color: ${GRAY_COLOR};
     font-size: 16px;
     font-weight: 500;
     text-align: center;
@@ -19,7 +27,8 @@ export const EmptyProjectWrapper = styled.div`
     margin-bottom: 20px;
   }
   button {
-    background-color: ${MAIN_COLOR};
+    background-color: ${BACKGROUND_COLOR};
+    border: 1px solid ${BACKGROUND_LINE};
     color: ${WHITE_COLOR};
     font-size: 14px;
     font-weight: 700;
@@ -28,7 +37,7 @@ export const EmptyProjectWrapper = styled.div`
     cursor: pointer;
     transition: background-color 0.15s ease-in;
     &:hover, &:active {
-      background-color: #7B59E3;
+      background-color: ${MAIN_COLOR};
     }
   }
 `;

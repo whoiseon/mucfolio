@@ -29,6 +29,9 @@ const initialState = {
   deleteProjectLoading: false,
   deleteProjectDone: false,
   deleteProjectError: null,
+  scheduleCheckLoading: false,
+  scheduleCheckDone: false,
+  scheduleCheckError: null,
 };
 
 export const getUserProject = createAsyncThunk("GET_USER_PROJECT", async ({ uid }) => {
@@ -194,6 +197,12 @@ export const scheduleCheck = createAsyncThunk("SCHEDULE_CHECK", async ({ uid, pr
       .update({
         [`${emptyScheduleName}.status`]: !checked,
       });
+
+    return {
+      project: emptyProjectName,
+      schedule: emptyScheduleName,
+      checked,
+    };
   } catch (error) {
     if (error.code) {
       throw error.code;
@@ -303,6 +312,26 @@ const projectSlice = createSlice({
     [deleteProject.rejected]: (state, action) => {
       state.deleteProjectLoading = false;
       state.deleteProjectError = action.error.message;
+    },
+    [scheduleCheck.pending]: (state) => {
+      state.scheduleCheckLoading = true;
+      state.scheduleCheckDone = false;
+      state.scheduleCheckError = null;
+    },
+    [scheduleCheck.fulfilled]: (state, action) => {
+      const findProject = state.projectList.find((v) => (
+        v.projectName === action.payload.project
+      ));
+      const findSchedule = findProject.schedule.find((v) => (
+        v.title === action.payload.schedule
+      ));
+      state.scheduleCheckLoading = false;
+      state.scheduleCheckDone = true;
+      findSchedule.status = !action.payload.checked;
+    },
+    [scheduleCheck.rejected]: (state, action) => {
+      state.scheduleCheckLoading = false;
+      state.scheduleCheckError = action.error.message;
     },
   },
 });

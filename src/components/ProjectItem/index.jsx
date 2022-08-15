@@ -43,7 +43,11 @@ const ProjectItem = ({ projectData }) => {
   }, [dispatch, userInfo.uid, projectData.projectName]);
 
   const showProject = useCallback((e) => {
-    if (e.target === e.currentTarget) {
+    // console.log(e.target, e.currentTarget);
+    // if (e.target === e.currentTarget) {
+    //   setProjectOpen((prev) => !prev);
+    // }
+    if (!(e.target.nodeName === 'svg' || e.target.nodeName === 'path')) {
       setProjectOpen((prev) => !prev);
     }
   }, []);
@@ -55,6 +59,9 @@ const ProjectItem = ({ projectData }) => {
   const onMouseHideIcon = useCallback(() => {
     setShowCtrlBtn(false);
   }, []);
+
+  const testFind = projectList.find((v) => v.schedule.title === projectData.title);
+  const findTitle = testFind.schedule.find((v) => v.title === 'a오날짜별로나오네');
 
   return (
     <ItemWrapper>

@@ -40,15 +40,21 @@ const Project = ({ children }) => {
                   <List>
                     {
                       projectList <= 0
-                        ? <EmptyProjectView onShowAddProjectModal={onShowAddProjectModal} />
+                        ? <EmptyProjectView content="프로젝트" onShowAddProjectModal={onShowAddProjectModal} />
                         : projectList?.map((data, i) => {
                           return <ProjectItem projectData={data} key={data.projectName} />;
                         })
                     }
                   </List>
-                  <AddProjectButton onClick={onShowAddProjectModal}>
-                    + 새 프로젝트
-                  </AddProjectButton>
+                  {
+                    projectList <= 0
+                      ? null
+                      : (
+                        <AddProjectButton onClick={onShowAddProjectModal}>
+                          + 새 프로젝트
+                        </AddProjectButton>
+                      )
+                  }
                 </>
               )
           }

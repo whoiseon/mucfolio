@@ -6,6 +6,7 @@ import MemoItem from "../../components/MemoItem";
 import AddMemoForm from "../../components/AddMemoForm";
 import {getUserMemo} from "../../slices/memoSlice";
 import ProjectLoading from "../../components/ProjectLoading";
+import EmptyProjectView from "../../components/EmptyProjectView";
 
 const Memo = () => {
   const dispatch = useDispatch();
@@ -35,11 +36,13 @@ const Memo = () => {
             {
               getUserMemosLoading
                 ? <ProjectLoading content="메모" />
-                : (
-                  memoList?.map((memo, i) => {
-                    return <MemoItem key={memo.content} memoData={memo} />;
-                  })
-                )
+                : memoList <= 0
+                  ? <EmptyProjectView content="메모" onShowAddProjectModal={onClickShowAddMemo} />
+                  : (
+                    memoList?.map((memo, i) => {
+                      return <MemoItem key={memo.content} memoData={memo} />;
+                    })
+                  )
             }
           </MemoList>
         </MemoWrapper>

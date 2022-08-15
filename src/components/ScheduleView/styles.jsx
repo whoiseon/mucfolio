@@ -15,6 +15,7 @@ export const SubMenu = styled.div`
 `;
 
 export const CtrlButtonWrapper = styled.div`
+  display: flex;
   margin-left: auto;
 `;
 
@@ -87,12 +88,11 @@ export const ScheduleContent = styled.p`
 `;
 
 export const ScheduleCheck = styled.div`
-  border-top: 1px solid ${BACKGROUND_LINE};
   button {
     display: flex;
     align-items: center;
     width: 100%;
-    border-right: 1px solid ${BACKGROUND_LINE};
+    border-left: 1px solid ${BACKGROUND_LINE};
     background-color: ${(props) => (props.status ? MAIN_COLOR : BACKGROUND_COLOR)};
     color: ${WHITE_COLOR};
     font-size: 14px;

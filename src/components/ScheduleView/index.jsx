@@ -74,15 +74,6 @@ const ProjectView = () => {
   return (
     <Background>
       <SubMenu>
-        <ScheduleCheck status={checked}>
-          <button type="button" onClick={onClickScheduleCheck}>
-            {
-              checked
-                ? '스케줄 취소'
-                : '스케줄 완료'
-            }
-          </button>
-        </ScheduleCheck>
         <CtrlButtonWrapper>
           <Link to={`/project/${params.project}/${params.schedule}/update`}>
             <CtrlButton>
@@ -90,6 +81,15 @@ const ProjectView = () => {
             </CtrlButton>
           </Link>
           <CtrlButton onClick={onClickDeleteSchedule}>삭제</CtrlButton>
+          <ScheduleCheck status={checked}>
+            <button type="button" onClick={onClickScheduleCheck}>
+              {
+                checked
+                  ? '스케줄 취소'
+                  : '스케줄 완료'
+              }
+            </button>
+          </ScheduleCheck>
         </CtrlButtonWrapper>
       </SubMenu>
       <ScheduleWrapper>

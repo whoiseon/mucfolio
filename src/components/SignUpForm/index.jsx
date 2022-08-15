@@ -9,6 +9,7 @@ import {userSignUp} from "../../slices/userSlice";
 const SignUpForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userInfo = JSON.parse(sessionStorage.getItem('connect_user'));
 
   const [name, onChangeName, setName] = useInput('');
   const [email, onChangeEmail, setEmail] = useInput('');
@@ -35,13 +36,14 @@ const SignUpForm = () => {
       email,
       password,
     }));
+    await navigate('/');
   }, [name, email, password]);
 
   const onClickCheckbox = useCallback(() => {
     setChecked((prev) => !prev);
   }, []);
 
-  if (userSignUpDone) {
+  if (userInfo) {
     navigate('/');
   }
 
