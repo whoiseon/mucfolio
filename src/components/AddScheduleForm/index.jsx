@@ -40,7 +40,14 @@ const AddScheduleForm = () => {
         ),
       ));
     }
-  }, [userInfo.uid, params.project, editorState, params.scheduleName]);
+  }, [
+    dispatch, userInfo.uid, params.project,
+    params.scheduleName, scheduleView?.content,
+  ]);
+
+  const onSubmitScheduleForm = useCallback((e) => {
+    e.preventDefault();
+  }, []);
 
   const onClickAddSchedule = useCallback(async () => {
     if (!title) return swal("업로드 에러", "제목을 입력해주세요", "error");
@@ -80,7 +87,7 @@ const AddScheduleForm = () => {
         </CtrlButtonWrapper>
       </SubMenu>
       <ScheduleWrapper>
-        <FormWrapper>
+        <FormWrapper onSubmit={onSubmitScheduleForm}>
           <input
             type="text"
             value={title || ''}
